@@ -1,0 +1,85 @@
+body {
+    background-color: white;
+    font-family: sans-serif;
+}
+
+.camera {
+    width: 6em;
+    height: 10em;
+    perspective-origin: 40% 40%;
+    perspective: 500px;
+    padding: 10em;
+}
+
+.space {
+    position: relative;
+    width: 100%;
+    height: 100%;
+    border: 1px dashed #000;
+    transform-style: preserve-3d;
+}
+
+.space div {
+    position: absolute;
+}
+
+.box1,
+.box2 {
+    position: absolute;
+    transform-style: preserve-3d;
+    z-index: 1;
+}
+
+.box1 div,
+.box2 div {
+    position: absolute;
+    width: 0;
+    height: 0;
+    border-width: 0 3.125em 5.438em;
+    border-style: solid;
+    opacity: .4;
+}
+
+.face1 {
+    border-color: transparent transparent #f00;
+    transform-origin: center bottom;
+    transform: translateX(-2.210em) rotateY(-45deg) rotateX(35.36deg);
+}
+
+.face2 {
+    border-color: transparent transparent #00f;
+    transform-origin: center bottom;
+    transform: translateX(2.210em) rotateY(45deg) rotateX(35.36deg);
+}
+
+.face3 {
+    border-color: transparent transparent #0f0;
+    transform-origin: center bottom;
+    transform: translateX(2.210em) translateZ(-4.420em) rotateY(-45deg) rotateX(-35.36deg);
+}
+
+.face4 {
+    border-color: transparent transparent #f90;
+    transform-origin: center bottom;
+    transform: translateX(-2.210em) translateZ(-4.420em) rotateY(45deg) rotateX(-35.36deg);
+}
+
+.box2 {
+    transform-origin: center 4.125em -2.125em;
+    transform: rotateX(180deg) translateY(-2.625em);
+}
+
+.box3 {
+    position: absolute;
+    z-index: 2;
+}
+
+.circle {
+    background-color: white;
+    width: 30px;
+    height: 30px;
+    border-radius: 50%;
+    transform: translateX(2.825em) translateY(4.625em);
+    z-index: 5;
+    opacity: 0.4;
+}
