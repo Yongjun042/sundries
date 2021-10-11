@@ -1,129 +1,114 @@
-import { ChevronLeftIcon, ChevronRightIcon } from '@chakra-ui/icons'
-import {
-  Badge,
-  Button,
-  Flex,
-  Heading,
-  IconButton,
-  Stack,
-  Table,
-  TableCaption,
-  Tbody,
-  Td,
-  Text,
-  Th,
-  Thead,
-  Tr,
-} from '@chakra-ui/react'
+
+import { DefaultButton, PrimaryButton, initializeIcons, Stack, Text, FontSizes, IconButton, IconFontSizes, values } from '@fluentui/react'
+import { ChoiceGroup, IChoiceGroupOption } from '@fluentui/react/lib/ChoiceGroup'
 import useCalendar from '@veccu/react-calendar'
 import { version } from '@veccu/react-calendar/package.json'
 import { format } from 'date-fns'
 import locale from 'date-fns/locale/en-US'
 import React from 'react'
 
+import './App.scss'
+
 
 export default function App() {
-  const { cursorDate, headers, body, navigation, view } = useCalendar()
+  const { cursorDate, headers, body, navigation, view } = useCalendar();
+
+  //이거
+  initializeIcons();
+
+  const viewOptions: IChoiceGroupOption[] = [
+    { key: "M", text: "Month", iconProps: { iconName: 'Calendar' } },
+    { key: "W", text: "Week", iconProps: { iconName: 'CalendarWeek' } },
+    { key: "D", text: "Day", iconProps: { iconName: 'CalendarDay' } }
+  ];
+
+  const dwmChange = React.useCallback(
+    (
+      ev?: React.FormEvent<HTMLElement | HTMLInputElement>,
+      option?: IChoiceGroupOption
+    ) => {
+      switch (option?.key) {
+        case 'M':
+          view.showMonthView();
+          break;
+        case 'W':
+          view.showWeekView();
+          break;
+        case 'D':
+          view.showDayView();
+          break;
+      }
+    },
+    //여기
+    [view]
+  );
 
   return (
-    <div>
+    <div className="body">
       <Stack
-        padding={12}
-        justifyContent="center"
-        direction="column"
-        alignItems="center"
-        spacing={4}
+        padding={24}
+        horizontalAlign="center"
       >
-        <Badge
-          colorScheme="green"
-          fontSize="1.2em"
-          px={2}
-          textTransform="lowercase"
-          aria-label="badge for current version"
-        >
-          v{version}
-        </Badge>
-        <Heading as="h1" size="xl">
-          react-calendar-basic-example
-        </Heading>
-        <Text color="gray.500">
-          Headless Calendar UI Library Example with Charkra UI
-        </Text>
-      </Stack>
+        <Stack.Item align="center" >
+          <label className="badge">v{version}</label>
+        </Stack.Item>
+        <Stack.Item align="center">
+          <h1 >
+            react-calendar-basic-example
+          </h1>
+        </Stack.Item>
+        <Stack.Item align="center">
+          <Text style={{ fontSize: FontSizes.size18, paddingBottom:"12px" }} >
+            Headless Calendar UI Library Example with Charkra UI
+          </Text>
+        </Stack.Item>
 
-      <Table variant="simple" size="lg">
-        <TableCaption placement="top">
-          <nav>
-            <Flex justify="space-between" width="w.100">
-              <Stack direction="row" gutter={4}>
-                <Button
-                  size="md"
-                  onClick={view.showMonthView}
-                  isActive={view.isMonthView}
-                  aria-label="button for changing view type to month"
-                >
-                  M
-                </Button>
-                <Button
-                  size="md"
-                  onClick={view.showWeekView}
-                  isActive={view.isWeekView}
-                  aria-label="button for changing view type to week"
-                >
-                  W
-                </Button>
-                <Button
-                  size="md"
-                  onClick={view.showDayView}
-                  isActive={view.isDayView}
-                  aria-label="button for changing view type to day"
-                >
-                  D
-                </Button>
-              </Stack>
-              <Text fontSize="2xl" data-testid="cursor-date">
+        <Stack.Item >
+      <table width = "80%"  >
+        <caption className="card">
+          <Stack disableShrink horizontalAlign="center">
+
+
+            <Stack.Item align="auto">
+              <Text data-testid="cursor-date"  style={{ fontSize: FontSizes.size24 }} >
                 {format(cursorDate, 'yyyy. MM')}
               </Text>
-              <Stack direction="row" gutter={8}>
-                <IconButton
-                  aria-label="button for navigating to prev calendar"
-                  icon={<ChevronLeftIcon />}
-                  onClick={navigation.toPrev}
-                />
-                <Button
-                  size="md"
-                  colorScheme="teal"
-                  onClick={navigation.setToday}
-                  aria-label="button for navigating to today calendar"
-                >
-                  TODAY
-                </Button>
-                <IconButton
-                  aria-label="button for navigating to next calendar"
-                  icon={<ChevronRightIcon />}
-                  onClick={navigation.toNext}
-                />
-              </Stack>
-            </Flex>
-          </nav>
-        </TableCaption>
-        <Thead>
-          <Tr>
+            </Stack.Item>
+
+            <Stack.Item>
+              <DefaultButton onClick={navigation.toPrev} iconProps={{iconName:"ChevronLeft"}}/>
+              <PrimaryButton onClick={navigation.setToday}  iconProps={{iconName:"GotoToday"}}/>
+              <DefaultButton onClick={navigation.toNext} iconProps={{iconName:"ChevronRight"}}/>
+            </Stack.Item>
+
+            <Stack.Item align="center">
+              <ChoiceGroup
+                label="Day, Week, Month view selector"
+                defaultSelectedKey="M"
+                options={viewOptions}
+                onChange={dwmChange}
+              />
+            </Stack.Item>
+          </Stack>
+        </caption>
+        <div className="card">
+        <thead>
+          <tr>
             {headers.weekDays.map(({ key, value }) => {
               return (
-                <Th key={key} data-testid="calendar-weekends">
+                <th key={key} data-testid="calendar-weekends">
                   {format(value, 'E', { locale })}
-                </Th>
+                </th>
               )
             })}
-          </Tr>
-        </Thead>
-        <Tbody>
+          </tr>
+        </thead>
+        <tbody>
           {body.value.map((week) => {
             const { key, value: days } = week
 
             return (
-              <Tr key={key} data-testid="calendar-weeks">
+              <tr key={key} data-testid="calendar-weeks">
                 {days.map((day) => {
                   const {
                     key,
@@ -132,32 +117,35 @@ export default function App() {
                     isCurrentMonth,
                     isWeekend,
                   } = day
-
+                  console.log(day);
                   return (
-                    <Td
+                    <td
                       key={key}
-                      opacity={isCurrentMonth ? 1 : 0.2}
+                      className ={isCurrentMonth ? "cmonth" : 'nmonth'}
                       data-testid={
                         isCurrentDate ? 'calendar-cell--today' : 'calendar-cell'
                       }
                     >
                       {isCurrentDate ? (
-                        <Text fontWeight="bold" color="teal.500">
+                        <Text className="now" aria-label={day.value.toISOString().substring(0, 10)}>
                           {date}
                         </Text>
                       ) : (
-                        <Text color={isWeekend ? 'red.500' : 'black.500'}>
+                        <Text className={isWeekend ? 'red' : ''} aria-label={day.value.toISOString().substring(0, 10)}>
                           {date}
                         </Text>
                       )}
-                    </Td>
+                    </td>
                   )
                 })}
-              </Tr>
+              </tr>
             )
           })}
-        </Tbody>
-      </Table>
+        </tbody>
+        </div>
+      </table>
+            </Stack.Item>
+      </Stack>
     </div>
   )
 }

@@ -3,14 +3,21 @@ import ReactDOM from 'react-dom';
 import './index.css';
 import App from './App';
 import reportWebVitals from './reportWebVitals';
-import { ChakraProvider } from "@chakra-ui/react"
+import { ThemeProvider, PartialTheme } from '@fluentui/react';
+
+const appTheme: PartialTheme = {
+  palette: {
+    themePrimary: 'blue'
+  }
+};
 
 ReactDOM.render(
-  <ChakraProvider>
+    
+  <ThemeProvider theme={appTheme}>
   <React.StrictMode>
     <App />
   </React.StrictMode>
-  </ChakraProvider>,
+  </ThemeProvider>,
   document.getElementById('root')
 );
 
