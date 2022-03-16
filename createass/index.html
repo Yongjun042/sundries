@@ -1,0 +1,26 @@
+<!DOCTYPE html>
+<html>
+
+<head>
+  <meta charset="UTF-8">
+  <!-- https://developer.mozilla.org/en-US/docs/Web/HTTP/CSP -->
+  <meta http-equiv="Content-Security-Policy" content="default-src 'self'; script-src 'self'">
+  <meta http-equiv="X-Content-Security-Policy" content="default-src 'self'; script-src 'self'">
+  <link rel="stylesheet" href="mvp.css" />
+  <link rel="stylesheet" href="index.css" />
+  <title>Make ass!</title>
+</head>
+
+<body>
+  <h1>텍스트를 ass로 바꾸기</h1>
+  <p><label for="title">제목:</label></p>
+  <input type="text" id="title" name="title" required>
+  <p><label for="start-minute">자막 시작 시간(분):</label></p>
+  <input type="number" id="start-minute" name="subtitle" required>
+  <p><label for="subtitle">자막 본문:</label></p>
+  <textarea type="text" id="subtitle" name="subtitle" cols="40" rows="10"></textarea>
+  <button id="btn-save">Save</button>
+  <script type="text/javascript" src="index.js"></script>
+</body>
+
+</html>
