@@ -1,6 +1,6 @@
 import { gql } from "graphql-tag";
 
-export type Cart = {
+export type CartType = {
   id: string;
   imageUrl: string;
   price: number;
@@ -9,22 +9,26 @@ export type Cart = {
 };
 
 export const ADD_CART = gql`
-    mutation ADD+CART($id: string){
-     id
-     imageUrl
-     price
-     title
-     amount
+  mutation ADD_CART($id: string) {
+    cart(id: $id) {
+      id
+      imageUrl
+      price
+      title
+      amount
     }
+  }
 `;
 
 export const GET_CART = gql`
-  query GET_PRODUCTS {
-    id
-    imageUrl
-    price
-    title
-    amount
+  query GET_CART {
+    carts {
+      id
+      imageUrl
+      price
+      title
+      amount
+    }
   }
 `;
 
