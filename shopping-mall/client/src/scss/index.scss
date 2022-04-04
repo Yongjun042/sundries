@@ -1,23 +1,29 @@
 @import 'products';
 @import 'cart';
+@import 'payment';
 
-body{
-    margin: 0; 
+body {
+    margin: 0;
 }
 
-#root{
+ul {
+    list-style: none;
+    padding: 0
+}
+
+#root {
     max-width: 900px;
     margin: 0 auto;
     padding: 0 10px;
 }
 
 
-.gnb{
-    ul{
+.gnb {
+    ul {
         padding: 0;
-        list-style:none;
+        list-style: none;
         display: flex;
         flex-direction: row;
-        gap:10px;
+        gap: 10px;
     }
 }
