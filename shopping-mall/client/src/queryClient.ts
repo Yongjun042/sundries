@@ -1,30 +1,31 @@
-import { QueryClient } from 'react-query'
-import {request, RequestDocument} from 'graphql-request'
+import { QueryClient } from "react-query"
+import { request, RequestDocument } from "graphql-request"
 
 type AnyOBJ = { [key: string]: any }
 
 //서버사이드 렌더링때문에 한번만 하게
-export const getClient =(()=>{
-    let client: QueryClient |null = null
-    return() =>{
-        if(!client) client = new QueryClient({
-          defaultOptions:{
-            queries:{
-              cacheTime:Infinity,
-              staleTime: Infinity,
-              refetchOnMount: false,
-              refetchOnReconnect:false,
-              refetchOnWindowFocus:false,
-
-            }
-          }
-        })
-        return client
-    }
+export const getClient = (() => {
+  let client: QueryClient | null = null
+  return () => {
+    if (!client)
+      client = new QueryClient({
+        defaultOptions: {
+          queries: {
+            cacheTime: Infinity,
+            staleTime: Infinity,
+            refetchOnMount: false,
+            refetchOnReconnect: false,
+            refetchOnWindowFocus: false,
+          },
+        },
+      })
+    return client
+  }
 })()
 
-const BASE_URL = '/'
+const BASE_URL = "http://localhost:8000/graphql"
 
+/*
 export const restFetcher = async ({
     method,
     path,
@@ -58,11 +59,12 @@ export const restFetcher = async ({
       console.error(err)
     }
   }
+  */
 
-export const graphqlFetcher = async (query: RequestDocument, variables ={}) =>
- request(BASE_URL, query, variables)
+export const graphqlFetcher = async (query: RequestDocument, variables = {}) =>
+  request(BASE_URL, query, variables)
 
 export const QueryKeys = {
-    PRODUCTS: 'PRODUCTS',
-    CART:'CART'
+  PRODUCTS: "PRODUCTS",
+  CART: "CART",
 }

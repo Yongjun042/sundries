@@ -1,54 +1,69 @@
-import { gql } from "graphql-tag";
+import { gql } from "graphql-tag"
+import { Product } from "./products"
 
 export type CartType = {
-  id: string;
-  imageUrl: string;
-  price: number;
-  title: string;
-  amount: number;
-};
+  id: string
+  amount: number
+  product: Product
+}
 
 export const ADD_CART = gql`
-  mutation ADD_CART($id: string) {
-    cart(id: $id) {
+  mutation ADD_CART($id: ID!) {
+    addCart(id: $id) {
       id
-      imageUrl
-      price
-      title
       amount
+      product {
+        id
+        imageUrl
+        price
+        title
+        description
+        createdAt
+      }
     }
   }
-`;
+`
 
 export const UPDATE_CART = gql`
-  mutation UPDATE_CART($id: string, $amount: number) {
-    cart(id: $id, amount: $amount) {
+  mutation UPDATE_CART($id: ID!, $amount: Int!) {
+    updateCart(id: $id, amount: $amount) {
       id
-      imageUrl
-      price
-      title
       amount
+      product {
+        id
+        imageUrl
+        price
+        title
+        description
+        createdAt
+      }
     }
   }
-`;
+`
 
 export const DELETE_CART = gql`
-  mutation DELETE_CART($id: string) {
-    id
+  mutation DELETE_CART($id: ID!) {
+    deleteCart {
+      id
+    }
   }
-`;
-
+`
 
 export const GET_CART = gql`
   query GET_CART {
-    carts {
+    cart {
       id
-      imageUrl
-      price
-      title
       amount
+      product {
+        id
+        imageUrl
+        price
+        title
+        description
+        createdAt
+      }
     }
   }
-`;
+`
 
-export default GET_CART;
+export default GET_CART
