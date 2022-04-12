@@ -1,22 +1,36 @@
-import { useQuery } from "react-query"
-import ProductItem from "../../components/product/item"
+import { useEffect, useRef } from 'react'
+import { useInfiniteQuery } from 'react-query'
+import ProductList from '../../components/product/list'
 import GET_PRODUCTS, { Products } from "../../graphql/products"
 import { graphqlFetcher, QueryKeys } from "../../queryClient"
+import useIntersection from '../../hooks/useIntersection'
 
-const ProductList = () => {
-  const { data } = useQuery<Products>(QueryKeys.PRODUCTS, () =>
-    graphqlFetcher(GET_PRODUCTS)
-  )
+const ProductListPage = () => {
+  const fetchMoreRef = useRef<HTMLDivElement>(null)
+  const intersecting = useIntersection(fetchMoreRef)
+
+  const { data, isSuccess, isFetchingNextPage, fetchNextPage, hasNextPage } =
+    useInfiniteQuery<Products>(
+      QueryKeys.PRODUCTS,
+      ({ pageParam = '' }) => graphqlFetcher(GET_PRODUCTS, { cursor: pageParam }),
+      {
+        getNextPageParam: lastPage => {
+          return lastPage.products.at(-1)?.id
+        },
+      },
+    )
+
+  useEffect(() => {
+    if (!intersecting || !isSuccess || !hasNextPage || isFetchingNextPage) return
+    fetchNextPage()
+  }, [intersecting])
 
   return (
     <div>
       <h2>상품목록</h2>
-      <ul className="products">
-        {data?.products?.map((product) => (
-          <ProductItem {...product} key={product.id} />
-        ))}
-      </ul>
+      <ProductList list={data?.pages || []} />
+      <div ref={fetchMoreRef} />
     </div>
   )
 }
-export default ProductList
+export default ProductListPage
