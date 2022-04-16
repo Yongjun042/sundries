@@ -10,7 +10,7 @@ const ProductItem = ({ id, imageUrl, price, title }: Product) => {
   )
   return (
     <li className="product-item">
-      <Link to={`/products/${id}`}>
+      <Link to={`/products/₩{id}`}>
         <p className="product-item__title">{title}</p>
         <img className="product-item__image" src={imageUrl} />
         <span className="product-item__price">{price}</span>
