@@ -13,6 +13,9 @@ const CartList = ({ items }: { items: CartType[] }) => {
   const formRef = useRef<HTMLFormElement>(null)
   const checkboxRefs = items.map(() => createRef<HTMLInputElement>())
   const [formData, setFormData] = useState<FormData>()
+
+  const enabledItems = items.filter((item) => item.product.createdAt)
+
   const setAllCheckedFromItems = () => {
     if (!formRef.current) {
       return
@@ -20,16 +23,20 @@ const CartList = ({ items }: { items: CartType[] }) => {
     const data = new FormData(formRef.current)
     const selectedCount = data.getAll("select-item").length
 
-    const allChecked = selectedCount === items.length
+    const allChecked = selectedCount === enabledItems.length
     formRef.current.querySelector<HTMLInputElement>(".select-all")!.checked =
       allChecked
   }
 
   const setItemsChckedFromAll = (targetInput: HTMLInputElement) => {
     const allChecked = targetInput.checked
-    checkboxRefs.forEach((inputElem) => {
-      inputElem.current!.checked = allChecked
-    })
+    checkboxRefs
+      .filter((inputElem) => {
+        return !inputElem.current!.disabled
+      })
+      .forEach((inputElem) => {
+        inputElem.current!.checked = allChecked
+      })
   }
   const handleCheckboxChanged = (e?: SyntheticEvent) => {
     if (!formRef.current) return
